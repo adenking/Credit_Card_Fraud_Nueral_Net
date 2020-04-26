@@ -32,16 +32,19 @@ for dense_layer in dense_layers:
         model.add(Dense(1))
         model.add(Activation('sigmoid'))
 
+        class_weight = {0: 0.5, 1: 289.44}
+
         tensorboard = TensorBoard(log_dir="logs\\{}".format(NAME))
 
         model.compile(loss='binary_crossentropy',
                       optimizer='adam',
                       metrics=['accuracy'],
                       )
-
+    
         model.fit(X, y,
                   batch_size=512,
                   epochs=10,
                   validation_split=0.3,
-                  callbacks=[tensorboard])
+                  callbacks=[tensorboard],
+                  class_weight=class_weight)
         model.save(f'models\\{NAME}.model')
